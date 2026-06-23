@@ -3,32 +3,83 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Codex Webapp</title>
+    <title>Wordhunt Solver</title>
     <meta
       name="description"
-      content="Starter web app scaffold for the first Codex GitHub repository."
+      content="Solve a 9x9 Wordhunt board by finding every valid word from adjacent letters."
     />
-    <link rel="stylesheet" href="/styles.css" />
+    <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
     <main class="shell">
       <section class="hero">
-        <p class="eyebrow">Starter repo</p>
-        <h1>Codex Webapp</h1>
-        <p class="lede">
-          A minimal, clean foundation for the web app we will build next.
-        </p>
-        <div class="actions">
-          <button id="primary-action" type="button">Initialize app state</button>
+        <div>
+          <p class="eyebrow">Wordhunt Solver</p>
+          <h1>Find every word on a 9x9 grid.</h1>
+          <p class="lede">
+            Enter one letter in each square, then search all paths that move in
+            any direction without reusing a tile.
+          </p>
+        </div>
+        <div class="hero-actions">
+          <button id="solve" type="button">Solve board</button>
+          <button id="fill-sample" type="button" class="secondary">
+            Load sample board
+          </button>
+          <button id="clear-board" type="button" class="ghost">
+            Clear board
+          </button>
         </div>
       </section>
 
-      <section class="card">
-        <h2>Status</h2>
-        <p id="status">Ready to build.</p>
+      <section class="grid-panel card">
+        <div class="panel-header">
+          <div>
+            <h2>Board</h2>
+            <p>Use letters only. Empty squares are allowed until you solve.</p>
+          </div>
+          <div class="stats">
+            <span id="tile-count">81 tiles</span>
+            <span id="word-count">0 words found</span>
+          </div>
+        </div>
+        <div id="board" class="board" aria-label="Wordhunt board"></div>
+      </section>
+
+      <section class="card controls">
+        <div class="panel-header">
+          <div>
+            <h2>Dictionary</h2>
+            <p>
+              Built-in common words are loaded by default. Paste your own list to
+              search a different set.
+            </p>
+          </div>
+        </div>
+        <textarea
+          id="dictionary"
+          spellcheck="false"
+          aria-label="Dictionary word list"
+        ></textarea>
+      </section>
+
+      <section class="card results">
+        <div class="panel-header">
+          <div>
+            <h2>Results</h2>
+            <p>Sorted by length, then alphabetically.</p>
+          </div>
+          <label class="toggle">
+            <input id="show-paths" type="checkbox" />
+            <span>Show paths</span>
+          </label>
+        </div>
+        <div id="results" class="results-list">
+          <p class="empty-state">No results yet. Enter letters and solve the board.</p>
+        </div>
       </section>
     </main>
 
-    <script type="module" src="/main.js"></script>
+    <script type="module" src="./main.js"></script>
   </body>
 </html>
