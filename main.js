@@ -24,6 +24,11 @@ const sampleBoard = [
 const size = BOARD_SIZE * BOARD_SIZE;
 const inputs = [];
 
+function focusFirstEmptyTile() {
+  const firstEmpty = inputs.find((input) => input.value === "");
+  (firstEmpty || inputs[0])?.focus();
+}
+
 function createBoard() {
   boardEl.innerHTML = "";
   for (let i = 0; i < size; i += 1) {
@@ -31,8 +36,11 @@ function createBoard() {
     input.type = "text";
     input.maxLength = 1;
     input.autocomplete = "off";
+    input.autocapitalize = "characters";
+    input.autocorrect = "off";
     input.spellcheck = false;
     input.inputMode = "text";
+    input.enterKeyHint = "next";
     input.setAttribute("aria-label", `Row ${Math.floor(i / BOARD_SIZE) + 1}, column ${(i % BOARD_SIZE) + 1}`);
     input.addEventListener("input", () => {
       input.value = input.value.replace(/[^a-zA-Z]/g, "").slice(0, 1).toUpperCase();
@@ -57,6 +65,7 @@ function loadSampleBoard() {
   inputs.forEach((input, index) => {
     input.value = sampleBoard[index] ? sampleBoard[index].toUpperCase() : "";
   });
+  focusFirstEmptyTile();
 }
 
 function clearBoard() {
@@ -65,6 +74,7 @@ function clearBoard() {
   });
   resultsEl.innerHTML = '<p class="empty-state">No results yet. Enter letters and solve the board.</p>';
   wordCountEl.textContent = "0 words found";
+  focusFirstEmptyTile();
 }
 
 function normalizeDictionary(rawText) {
@@ -213,3 +223,4 @@ dictionaryEl.addEventListener("input", () => {
 
 loadSampleBoard();
 solveCurrentBoard();
+focusFirstEmptyTile();
