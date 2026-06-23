@@ -51,11 +51,15 @@ function createBoard() {
         input.select();
       });
     });
-    input.addEventListener("pointerdown", () => {
-      requestAnimationFrame(() => {
-        input.focus();
-        input.select();
-      });
+    input.addEventListener("mousedown", (event) => {
+      event.preventDefault();
+      input.focus();
+      input.select();
+    });
+    input.addEventListener("pointerdown", (event) => {
+      event.preventDefault();
+      input.focus();
+      input.select();
     });
     input.addEventListener("keydown", (event) => {
       if (event.ctrlKey || event.metaKey || event.altKey) {
