@@ -1,4 +1,4 @@
-# Codex Webapp
+# WordSolver
 
 Starter repository for a small web app.
 
