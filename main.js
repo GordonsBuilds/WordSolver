@@ -53,6 +53,44 @@ function createBoard() {
         input.select();
       });
     });
+    input.addEventListener("keydown", (event) => {
+      if (event.ctrlKey || event.metaKey || event.altKey) {
+        return;
+      }
+
+      if (event.key === "Backspace") {
+        if (input.value !== "") {
+          input.value = "";
+          event.preventDefault();
+          return;
+        }
+
+        if (i > 0) {
+          const previous = inputs[i - 1];
+          previous.value = "";
+          previous.focus();
+          previous.select();
+          event.preventDefault();
+        }
+        return;
+      }
+
+      if (event.key.length !== 1) {
+        return;
+      }
+
+      const text = event.key.replace(/[^a-zA-Z]/g, "").toUpperCase();
+      if (!text) {
+        event.preventDefault();
+        return;
+      }
+
+      input.value = text;
+      event.preventDefault();
+      if (i < inputs.length - 1) {
+        inputs[i + 1].focus();
+      }
+    });
     input.addEventListener("beforeinput", (event) => {
       if (event.inputType === "deleteContentBackward") {
         if (input.value === "" && i > 0) {
@@ -75,12 +113,6 @@ function createBoard() {
       input.value = text;
       if (i < inputs.length - 1) {
         inputs[i + 1].focus();
-      }
-    });
-    input.addEventListener("keydown", (event) => {
-      if (event.key === "Backspace" && input.value !== "") {
-        input.value = "";
-        event.preventDefault();
       }
     });
     boardEl.appendChild(input);
