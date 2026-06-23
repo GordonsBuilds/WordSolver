@@ -42,17 +42,44 @@ function createBoard() {
     input.inputMode = "text";
     input.enterKeyHint = "next";
     input.setAttribute("aria-label", `Row ${Math.floor(i / BOARD_SIZE) + 1}, column ${(i % BOARD_SIZE) + 1}`);
-    input.addEventListener("input", () => {
-      input.value = input.value.replace(/[^a-zA-Z]/g, "").slice(0, 1).toUpperCase();
-      if (input.value && i < inputs.length - 1) {
+    input.addEventListener("focus", () => {
+      requestAnimationFrame(() => {
+        input.select();
+      });
+    });
+    input.addEventListener("pointerdown", () => {
+      requestAnimationFrame(() => {
+        input.focus();
+        input.select();
+      });
+    });
+    input.addEventListener("beforeinput", (event) => {
+      if (event.inputType === "deleteContentBackward") {
+        if (input.value === "" && i > 0) {
+          event.preventDefault();
+          const previous = inputs[i - 1];
+          previous.value = "";
+          previous.focus();
+          previous.select();
+        }
+        return;
+      }
+
+      const text = event.data?.replace(/[^a-zA-Z]/g, "").slice(0, 1).toUpperCase();
+      if (!text) {
+        event.preventDefault();
+        return;
+      }
+
+      event.preventDefault();
+      input.value = text;
+      if (i < inputs.length - 1) {
         inputs[i + 1].focus();
       }
     });
     input.addEventListener("keydown", (event) => {
-      if (event.key === "Backspace" && i > 0 && input.value === "") {
-        const previous = inputs[i - 1];
-        previous.value = "";
-        previous.focus();
+      if (event.key === "Backspace" && input.value !== "") {
+        input.value = "";
         event.preventDefault();
       }
     });
