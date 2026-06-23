@@ -1,4 +1,4 @@
-const BOARD_SIZE = 9;
+const BOARD_SIZE = 4;
 
 const builtInDictionary = [
   "able","about","above","acorn","act","active","actor","after","again","age","agent","ago","air","alert","alien","all","alone","along","alpha","also","amaze","amber","among","and","angle","animal","answer","apple","apply","arena","arm","art","aster","audio","auto","awake","aware","back","badge","balance","ball","bank","bar","base","basic","beach","beam","bear","beast","beauty","bed","before","begin","below","best","better","between","beyond","big","bird","blank","blend","blue","boat","bold","book","bonus","border","born","bottle","bottom","brain","brand","brave","bread","break","bridge","bright","bring","brother","build","bunch","burn","busy","cable","calm","camera","camp","can","canvas","cap","care","carry","case","catch","cause","cell","center","chain","chair","chalk","chance","change","chart","check","child","circle","city","claim","class","clean","clear","climb","close","cloud","color","combine","come","common","company","compare","complete","cool","corner","count","cover","craft","create","cross","crowd","curve","cycle","dark","data","day","deal","deep","define","delay","desert","design","detail","device","dinner","direct","dog","door","double","dream","drive","drop","earth","east","easy","edge","effect","effort","eight","either","element","elite","empty","end","energy","engine","enjoy","enter","equal","event","ever","every","exact","example","eye","face","fact","fair","family","fancy","fast","father","feel","field","figure","file","fill","final","find","fire","first","fit","flash","flow","focus","follow","food","force","forest","form","found","frame","friend","front","game","garden","gate","general","gentle","gift","glass","glow","goal","gold","good","grade","grain","grand","grass","great","green","grid","group","grow","guard","guide","hand","happy","hard","harbor","heart","heat","hello","help","hero","hidden","hill","hold","home","honest","hope","horse","hour","house","human","idea","image","impact","inside","iron","item","join","journey","joy","keep","key","kind","king","know","label","lake","large","later","layer","learn","leave","level","light","limit","line","link","list","local","logic","long","look","loop","lot","magic","main","make","many","map","mark","market","matter","mean","media","meet","metal","middle","mind","model","modern","moment","more","move","music","name","narrow","near","need","never","night","north","note","number","object","ocean","offer","open","order","other","outer","page","paint","panel","part","path","peace","people","phone","piece","place","plain","plan","plant","play","point","power","press","prime","print","proof","pulse","quick","quiet","race","range","rare","reach","read","ready","real","record","red","river","road","rock","room","round","safe","scale","scene","school","search","season","second","seed","sense","shape","share","shift","shine","ship","short","side","simple","skill","small","smart","smile","solid","sound","south","space","speed","spell","spirit","spot","spring","square","stand","start","stone","story","stream","strong","style","sun","sweet","table","team","text","thank","thin","thing","think","third","time","together","tone","tool","top","tower","track","trade","train","tree","true","turn","type","under","unit","upper","use","value","view","voice","walk","water","whole","wide","wind","window","word","work","world","write","yellow","young"
@@ -15,15 +15,10 @@ const tileCountEl = document.querySelector("#tile-count");
 const showPathsEl = document.querySelector("#show-paths");
 
 const sampleBoard = [
-  "c","a","t","s","l","i","n","e","r",
-  "o","r","e","t","h","a","p","e","x",
-  "d","o","g","m","n","o","u","s","e",
-  "w","i","n","d","b","l","u","e","r",
-  "g","r","e","e","n","p","l","a","y","",
-  "s","h","i","p","t","r","e","e","s","",
-  "b","o","a","r","d","q","u","e","s","t",
-  "m","o","o","n","l","i","g","h","t","",
-  "p","a","t","h","c","o","d","e","r","s"
+  "c","a","t","s",
+  "l","i","n","e",
+  "d","o","g","s",
+  "w","o","r","d"
 ];
 
 const size = BOARD_SIZE * BOARD_SIZE;
@@ -41,10 +36,16 @@ function createBoard() {
     input.setAttribute("aria-label", `Row ${Math.floor(i / BOARD_SIZE) + 1}, column ${(i % BOARD_SIZE) + 1}`);
     input.addEventListener("input", () => {
       input.value = input.value.replace(/[^a-zA-Z]/g, "").slice(0, 1).toUpperCase();
+      if (input.value && i < inputs.length - 1) {
+        inputs[i + 1].focus();
+      }
     });
     input.addEventListener("keydown", (event) => {
-      if (event.key === "Backspace" && input.value === "" && i > 0) {
-        inputs[i - 1].focus();
+      if (event.key === "Backspace" && i > 0 && input.value === "") {
+        const previous = inputs[i - 1];
+        previous.value = "";
+        previous.focus();
+        event.preventDefault();
       }
     });
     boardEl.appendChild(input);
