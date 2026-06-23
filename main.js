@@ -29,6 +29,10 @@ function focusFirstEmptyTile() {
   (firstEmpty || inputs[0])?.focus();
 }
 
+function focusFirstTile() {
+  inputs[0]?.focus();
+}
+
 function createBoard() {
   boardEl.innerHTML = "";
   for (let i = 0; i < size; i += 1) {
@@ -91,30 +95,6 @@ function createBoard() {
         inputs[i + 1].focus();
       }
     });
-    input.addEventListener("beforeinput", (event) => {
-      if (event.inputType === "deleteContentBackward") {
-        if (input.value === "" && i > 0) {
-          event.preventDefault();
-          const previous = inputs[i - 1];
-          previous.value = "";
-          previous.focus();
-          previous.select();
-        }
-        return;
-      }
-
-      const text = event.data?.replace(/[^a-zA-Z]/g, "").slice(0, 1).toUpperCase();
-      if (!text) {
-        event.preventDefault();
-        return;
-      }
-
-      event.preventDefault();
-      input.value = text;
-      if (i < inputs.length - 1) {
-        inputs[i + 1].focus();
-      }
-    });
     boardEl.appendChild(input);
     inputs.push(input);
   }
@@ -124,7 +104,7 @@ function loadSampleBoard() {
   inputs.forEach((input, index) => {
     input.value = sampleBoard[index] ? sampleBoard[index].toUpperCase() : "";
   });
-  focusFirstEmptyTile();
+  focusFirstTile();
 }
 
 function clearBoard() {
@@ -282,4 +262,4 @@ dictionaryEl.addEventListener("input", () => {
 
 loadSampleBoard();
 solveCurrentBoard();
-focusFirstEmptyTile();
+focusFirstTile();
